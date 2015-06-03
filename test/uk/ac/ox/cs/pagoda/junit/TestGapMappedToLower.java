@@ -56,22 +56,28 @@ public class TestGapMappedToLower {
 		manager.addAxiom(ontology, factory.getOWLSubClassOfAxiom(A1, factory.getOWLObjectMaxCardinality(1, r)));	// A1 \sqsubseteq \leq 1 r.\top 
 		manager.addAxiom(ontology, factory.getOWLSubClassOfAxiom(A2, factory.getOWLObjectMaxCardinality(1, r)));	// A2 \sqsubseteq \leq 1 r.\top 
 
-		QueryReasoner pagoda = QueryReasoner.getInstance(ontology); 
-		pagoda.loadOntology(ontology);
-		if (pagoda.preprocess()) {
-			String sparql = "select ?x where { "
-					+ "?x <" + r.toStringID() + "> ?y . "
-					+ "?y " + Namespace.RDF_TYPE_QUOTED + " <" + B.toStringID() + "> . "
-					+ "?y " + Namespace.RDF_TYPE_QUOTED + " <" + C.toStringID() + "> . } ";
-			AnswerTuples rs = pagoda.evaluate(sparql);
-			int count = 0; 
-			for (AnswerTuple ans; rs.isValid(); rs.moveNext()) {
-				ans = rs.getTuple(); 
-				System.out.println(ans.getGroundTerm(0)); 
-				++count; 
+		QueryReasoner pagoda = null;
+		try {
+			pagoda = QueryReasoner.getInstance(ontology); 
+			pagoda.loadOntology(ontology);
+			if (pagoda.preprocess()) {
+				String sparql = "select ?x where { "
+						+ "?x <" + r.toStringID() + "> ?y . "
+						+ "?y " + Namespace.RDF_TYPE_QUOTED + " <" + B.toStringID() + "> . "
+						+ "?y " + Namespace.RDF_TYPE_QUOTED + " <" + C.toStringID() + "> . } ";
+				AnswerTuples rs = pagoda.evaluate(sparql);
+				int count = 0; 
+				for (AnswerTuple ans; rs.isValid(); rs.moveNext()) {
+					ans = rs.getTuple(); 
+					System.out.println(ans.getGroundTerm(0)); 
+					++count; 
+				}
+				Assert.assertEquals(1, count);
 			}
-			Assert.assertEquals(1, count);
+		} finally {
+			if (pagoda != null) pagoda.dispose();
 		}
+		
 	}
 
 }
