@@ -11,8 +11,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -26,13 +24,14 @@ import org.semanticweb.HermiT.model.Atom;
 
 public class Utility {
 	
-	private static final Logger LOGS = Logger.getLogger(""); // null; //  
+	private static final Logger LOGS = null; // Logger.getLogger(""); 
 	
 	public static final String JAVA_FILE_SEPARATOR = "/";
 	public static final String FILE_SEPARATOR = System.getProperty("file.separator");
 	public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 	
-	public static final String TempDirectory = (new File("tmp" + DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now()))).getAbsolutePath() + FILE_SEPARATOR;
+	public static final SimpleDateFormat sdf = new SimpleDateFormat("MM-dd_HH:mm:ss.SSS");
+	public static final String TempDirectory = (new File("tmp_" + sdf.format(new Date()))).getAbsolutePath() + FILE_SEPARATOR;
 	
 	public static final int TEST = -1; 
 	public static final int FLY = 0;
