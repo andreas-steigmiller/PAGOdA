@@ -4,3 +4,7 @@
 /tmp/
 /testcase/
 /log4j.log
+/.gitignore
+/.DS_Store
+/.settings/*
+/data/.DS_Store
